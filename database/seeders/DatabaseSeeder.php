@@ -14,5 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        \App\Models\Topicality::factory(30)->create();
+        /*  $this->call(TopicalityTableSeeder::class); */
     }
 }
