@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Topicality as ResourcesTopicality;
 use Illuminate\Http\Request;
 use App\Models\Topicality;
 
@@ -14,7 +15,10 @@ class TopicalityController extends Controller
      */
     public function index()
     {
-        //
+        /*         $topacalities = Topicality::all();
+        // return $topacalities->toJson(JSON_PRETTY_PRINT);
+        return $topacalities; */
+        return ResourcesTopicality::collection(Topicality::all());
     }
 
     /**
@@ -25,7 +29,11 @@ class TopicalityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Topicality::create($request->all())) {
+            return  response()->json([
+                'success' => 'data saved'
+            ], 200);
+        }
     }
 
     /**
@@ -34,9 +42,10 @@ class TopicalityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Topicality $topicality)
     {
-        //
+        /*         return  $topicality; */
+        return  new ResourcesTopicality($topicality);
     }
 
     /**
@@ -46,9 +55,13 @@ class TopicalityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Topicality $topicality)
     {
-        //
+        if ($topicality->update($request->all())) {
+            return response()->json([
+                'success' => 'data updated'
+            ], 200,);
+        }
     }
 
     /**
@@ -57,8 +70,8 @@ class TopicalityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Topicality $topicality)
     {
-        //
+        $topicality->delete();
     }
 }
